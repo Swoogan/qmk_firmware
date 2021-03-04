@@ -1,9 +1,49 @@
 #include QMK_KEYBOARD_H
 
-#define _COLMAK 0
+#define _COLMK 0
 #define _LOWER 1
 #define _RAISE 2
-#define _ADJUST 3
+#define _EXTND 3
+#define _NUMBR 4
+
+#define _ADJUST 99
+
+#define ESC_EX LT(_EXTND, KC_ESC)
+
+// Left-hand home row mod
+// Colemak-DH
+#define HOME_CA LT(_NUMBR, KC_A)
+#define HOME_CR LALT_T(KC_R)
+#define HOME_CS LCTL_T(KC_S)
+#define HOME_CT LSFT_T(KC_T)
+
+// Qwerty
+#define HOME_QA LGUI_T(KC_A)
+#define HOME_QS LALT_T(KC_S)
+#define HOME_QD LSFT_T(KC_D)
+#define HOME_QF LCTL_T(KC_F)
+
+// Right-hand home row mod
+// Colemak-DH
+#define HOME_CN RSFT_T(KC_N)
+#define HOME_CE RCTL_T(KC_E)
+#define HOME_CI LALT_T(KC_I)
+#define HOME_CO LT(_NUMBR, KC_O)
+
+// Qwerty
+#define HOME_QC RGUI_T(KC_SCLN)
+#define HOME_QL LALT_T(KC_L)
+#define HOME_QK RSFT_T(KC_K)
+#define HOME_QJ RCTL_T(KC_J)
+
+#define EX_BCK LALT(KC_LEFT)
+#define EX_FWD LALT(KC_RGHT)
+
+#define SALL  C(KC_A)
+#define UNDO  C(KC_Z)
+#define CUT   C(KC_X)
+#define COPY  C(KC_C)
+#define PASTE C(KC_V)
 
 enum custom_keycodes {
   COLMAK = SAFE_RANGE,
@@ -14,17 +54,17 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_COLMAK] = LAYOUT(
+  [_COLMK] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_NO,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     LT(3,KC_ESC), LT(4, KC_A),    LALT_T(KC_R),    LCTL_T(KC_S),    LSFT_T(KC_T),    KC_D,                               KC_H, RSFT_T(KC_N), RCTL_T(KC_E), RALT_T(KC_I), LT(4,KC_O), KC_QUOT,
+     ESC_EX,  HOME_CA, HOME_CR, HOME_CS, HOME_CT, KC_D,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, HOME_CO, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    BL_STEP,           KC_LGUI,  KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_NO,
+     KC_NO,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    BL_STEP,          KC_LGUI, KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_DEL,  MO(1),   KC_ENT,                    MO(2),   KC_SPC,  KC_BSPC
+                                    KC_DEL,  MO(1),   KC_ENT,                    KC_SPC,  KC_BSPC, MO(2)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -56,24 +96,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
-    [3] = LAYOUT(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LALT(KC_LEFT), LALT(KC_RGHT), KC_TRNS, KC_PGUP, KC_HOME, KC_UP, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_A), KC_TRNS, KC_LCTL, KC_LSFT, KC_TRNS, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
-    [4] = LAYOUT(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_TRNS, KC_TRNS, KC_GRV, KC_MINS, KC_EQL, LSFT_T(KC_LBRC), KC_RBRC, KC_BSLS, RSFT_T(KC_QUOT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
 
-/*        
-  [3] = LAYOUT(
+
+
+  [_EXTND] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+     _______, _______, _______, EX_BCK,  EX_FWD,  _______,                            KC_PGUP, KC_HOME, KC_UP,   KC_END,  _______, _______, 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+     _______, SALL,    _______, KC_LCTL, KC_LSFT, _______,                            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______,
+     _______, UNDO,    CUT,     COPY,    PASTE,   _______, _______,          _______, _______, _______, _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
+
+  [_NUMBR] = LAYOUT(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_TRNS, KC_TRNS, KC_GRV, KC_MINS, KC_EQL, LSFT_T(KC_LBRC), KC_RBRC, KC_BSLS, RSFT_T(KC_QUOT), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
+/*
   [4] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
@@ -94,7 +136,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case COLMAK:
       if (record->event.pressed) {
-        set_single_persistent_default_layer(_COLMAK);
+        set_single_persistent_default_layer(_COLMK);
       }
       return false;
       break;
