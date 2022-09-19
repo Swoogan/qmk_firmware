@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Hardware settings
 #define USE_SERIAL
-#define MASTER_LEFT
+#define MASTER_RIGHT
 
 // Home row mod settings
 #define TAPPING_TERM 200
