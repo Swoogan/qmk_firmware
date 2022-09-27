@@ -32,7 +32,7 @@
 #define HOME_QK RSFT_T(KC_K)
 #define HOME_QJ RCTL_T(KC_J)
 
-#define M_NAV LT(NAV, KC_ESC)
+#define M_NAV LT(_NAV, KC_ESC)
 #define M_NUM LT(_NUMBER, KC_SPC)
 #define M_LSYM OSL(_SYMBOL)
 #define M_RSYM OSL(_SYMBOL)
