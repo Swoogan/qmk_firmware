@@ -32,13 +32,16 @@
 #define HOME_QK RSFT_T(KC_K)
 #define HOME_QJ RCTL_T(KC_J)
 
-#define M_NAV MO(_NAV)
-#define M_LSYM MO(_SYMBOL)
-#define M_RSYM LT(_SYMBOL, KC_SPC)
+#define M_NAV LT(NAV, KC_ESC)
+#define M_NUM LT(_NUMBER, KC_SPC)
+#define M_LSYM OSL(_SYMBOL)
+#define M_RSYM OSL(_SYMBOL)
+// #define M_RSYM LT(_SYMBOL, KC_SPC)
+#define M_LSFT OSM(MOD_LSFT)
 
 // Temp
-#define M_NUM LT(_NUMBER, KC_SPC)
 #define M_DJ LT(_DEAD, KC_J)
+#define M_DK LT(_DEAD, KC_K)
 
 /* enum custom_keycodes { */
 /*   COLMAK = SAFE_RANGE, */
@@ -72,10 +75,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,  KC_A,    HOME_CR, HOME_CS, HOME_CT, KC_D,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, KC_O,    KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          KC_LGUI, KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_NO,
+     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          KC_LGUI, M_DK,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    // M_NAV,   M_LSYM,  M_NAV,                     MO(4),   M_RSYM,  KC_BSPC
-                                    _______, M_NAV ,  MO(4),                     MO(4),   M_NUM,   KC_BSPC
+                                    // M_NAV,   M_LSYM,  KC_LSFT,                   KC_RSFT, M_RSYM,  M_NUM
+                                    M_LSFT,  M_NAV,   M_LSYM,                    M_RSYM,  M_NUM,   KC_BSPC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -83,13 +86,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_9,    KC_8,    KC_7,    _______,                            _______, KC_7,    KC_8,    KC_9,    _______, _______,
+     KC_SLSH, KC_ASTR, KC_9,    KC_8,    KC_7,    KC_COMM,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_6,    KC_5,    KC_4,    KC_0,                               _______, KC_1,    KC_0,    KC_2,    KC_3,    _______,
+     KC_MINS, KC_PLUS, KC_6,    KC_5,    KC_4,    KC_0,                               _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_3,    KC_2,    KC_1,    _______, _______,          _______, _______, KC_4,    KC_5,    KC_6,    _______, _______,
+     _______, KC_EQL,  KC_3,    KC_2,    KC_1,    KC_DOT,  _______,          _______, _______, _______, _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, _______
+                                    _______, _______, KC_SPC,                    _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -167,4 +170,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     // }
 
     return false;
+}
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case HOME_CN:
+        case HOME_CT:
+            return TAPPING_TERM + 600;
+        default:
+            return TAPPING_TERM;
+    }
 }
