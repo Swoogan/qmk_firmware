@@ -43,12 +43,11 @@
 #define M_DJ LT(_DEAD, KC_J)
 #define M_DK LT(_DEAD, KC_K)
 
-/* enum custom_keycodes { */
-/*   COLMAK = SAFE_RANGE, */
-/*   LOWER, */
-/*   RAISE, */
-/*   ADJUST, */
-/* }; */
+enum custom_keycodes {
+  BACKDEL = SAFE_RANGE,
+  PNCT1,
+  PNCT2,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
@@ -79,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     // M_NAV,   M_LSYM,  KC_LSFT,                   KC_RSFT, M_RSYM,  M_NUM
                                     // M_LSFT,  M_NAV,   M_LSYM,                    M_RSYM,  M_NUM,   KC_BSPC
-                                    _______, M_NAV,   M_LSFT,                    M_RSYM,  M_NUM,   KC_BSPC
+                                    KC_TAB,  M_NAV,   M_LSFT,                    M_RSYM,  M_NUM,   KC_BSPC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
