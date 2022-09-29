@@ -33,8 +33,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define IGNORE_MOD_TAP_INTERRUPT
 
 // This prevents accidental repeats of the tap-hold keys when typing quickly.
-#define TAPPING_FORCE_HOLD
+// apparently this breaks ONESHOT_TAP_TOGGLE
+// #define TAPPING_FORCE_HOLD
 
 // This prevents short hold periods to be interpreted as individual taps when typing quickly.
-#define PERMISSIVE_HOLD
+// this breaks setting a really long tapping term, so temporarily disabling it
+// #define PERMISSIVE_HOLD
 
