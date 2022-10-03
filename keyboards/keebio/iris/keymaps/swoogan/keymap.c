@@ -45,8 +45,8 @@
 
 enum custom_keycodes {
   BACKDEL = SAFE_RANGE,
-  PNCT1,
-  PNCT2,
+  PUNCT1,
+  PUNCT2,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -74,10 +74,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,  KC_A,    HOME_CR, HOME_CS, HOME_CT, KC_D,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, KC_O,    KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          KC_LGUI, M_DK,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_NO,
+     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          KC_LGUI, M_DK,    KC_M,    PUNCT1,  PUNCT2,  KC_QUOT, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    // M_NAV,   M_LSYM,  KC_LSFT,                   KC_RSFT, M_RSYM,  M_NUM
-                                    // M_LSFT,  M_NAV,   M_LSYM,                    M_RSYM,  M_NUM,   KC_BSPC
                                     KC_TAB,  M_NAV,   M_LSFT,                    M_RSYM,  M_NUM,   KC_BSPC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
@@ -100,13 +98,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_AT,   KC_CIRC, KC_DLR,  _______,                            _______, KC_HASH, KC_ASTR, KC_EXLM, _______, _______,
+     _______, _______, KC_AT,   KC_CIRC, KC_DLR,  KC_TILD,                            _______, KC_HASH, KC_ASTR, KC_AMPR, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_PLUS, KC_EQL,  KC_LPRN, KC_RPRN, KC_PIPE,                            KC_BSLS, KC_LCBR, KC_RCBR, KC_DQUO, KC_COLN, _______,
+     _______, KC_PIPE, KC_UNDS, KC_LPRN, KC_RPRN, KC_SLSH,                            KC_BSLS, KC_LCBR, KC_RCBR, KC_MINS, KC_COLN, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_TILD, KC_UNDS, KC_PERC, _______, _______,          _______, KC_AMPR, KC_GRV,  KC_LBRC, KC_RBRC, _______, _______,
+     _______, _______, KC_TILD, KC_LABK, KC_RABK, _______, _______,          _______, _______, KC_LBRC, KC_RBRC, KC_PLUS, KC_EQL, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, KC_QUOT, KC_SPC,                    _______, KC_MINS, _______
+                                    _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -152,6 +150,92 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 };
+
+uint8_t mod_state;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Store the current modifier state in the variable for later reference
+    mod_state = get_mods();
+    switch (keycode) {
+
+        case KC_BSPC:
+            {
+                // Initialize a boolean variable that keeps track
+                // of the delete key status: registered or not?
+                static bool delkey_registered;
+                if (record->event.pressed) {
+                    // Detect the activation of either shift keys
+                    if (mod_state & MOD_MASK_SHIFT) {
+                        // First temporarily canceling both shifts so that
+                        // shift isn't applied to the KC_DEL keycode
+                        del_mods(MOD_MASK_SHIFT);
+                        register_code(KC_DEL);
+                        // Update the boolean variable to reflect the status of KC_DEL
+                        delkey_registered = true;
+                        // Reapplying modifier state so that the held shift key(s)
+                        // still work even after having tapped the Backspace/Delete key.
+                        set_mods(mod_state);
+                        return false;
+                    }
+                } else { // on release of KC_BSPC
+                    // In case KC_DEL is still being sent even after the release of KC_BSPC
+                    if (delkey_registered) {
+                        unregister_code(KC_DEL);
+                        delkey_registered = false;
+                        return false;
+                    }
+                }
+                // Let QMK process the KC_BSPC keycode as usual outside of shift
+                return true;
+            }
+        case PUNCT1:
+            {
+                static bool exlmkey_registered;
+                if (record->event.pressed) {
+                    if (mod_state & MOD_MASK_SHIFT) {
+                        register_code(KC_1);
+                        exlmkey_registered = true;
+                    }
+                    else {
+                        register_code(KC_COMM);
+                    }
+                    return false;
+                } else { // on release of ,
+                    if (exlmkey_registered) {
+                        unregister_code(KC_1);
+                        exlmkey_registered = false;
+                    } else {
+                        unregister_code(KC_COMM);
+                    }
+                    return false;
+                }
+            }
+        case PUNCT2:
+            {
+                static bool exlmkey_registered;
+                if (record->event.pressed) {
+                    if (mod_state & MOD_MASK_SHIFT) {
+                        register_code(KC_SLSH);
+                        exlmkey_registered = true;
+                    }
+                    else {
+                        register_code(KC_DOT);
+                    }
+                    return false;
+                } else { // on release of ,
+                    if (exlmkey_registered) {
+                        unregister_code(KC_SLSH);
+                        exlmkey_registered = false;
+                    } else {
+                        unregister_code(KC_DOT);
+                    }
+                    return false;
+                }
+            }
+
+    }
+
+    return true;
+}
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
