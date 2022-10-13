@@ -211,20 +211,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case PUNCT2:
             {
-                static bool exlmkey_registered;
+                static bool dotkey_registered;
                 if (record->event.pressed) {
                     if (mod_state & MOD_MASK_SHIFT) {
                         register_code(KC_SLSH);
-                        exlmkey_registered = true;
+                        dotkey_registered = true;
                     }
                     else {
                         register_code(KC_DOT);
                     }
                     return false;
                 } else { // on release of ,
-                    if (exlmkey_registered) {
+                    if (dotkey_registered) {
                         unregister_code(KC_SLSH);
-                        exlmkey_registered = false;
+                        dotkey_registered = false;
                     } else {
                         unregister_code(KC_DOT);
                     }
