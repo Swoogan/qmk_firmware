@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Home row mod settings
 #define TAPPING_TERM 200
-#define TAPPING_TERM_PER_KEY
 
 // One shot settings
 #define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
@@ -37,6 +36,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define TAPPING_FORCE_HOLD
 
 // This prevents short hold periods to be interpreted as individual taps when typing quickly.
-// this breaks setting a really long tapping term, so temporarily disabling it
-// #define PERMISSIVE_HOLD
+#define PERMISSIVE_HOLD
 

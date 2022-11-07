@@ -36,7 +36,6 @@
 #define M_NUM LT(_NUMBER, KC_SPC)
 #define M_LSYM OSL(_SYMBOL)
 #define M_RSYM OSL(_SYMBOL)
-// #define M_RSYM LT(_SYMBOL, KC_SPC)
 #define M_LSFT OSM(MOD_LSFT)
 
 // Temp
@@ -44,9 +43,9 @@
 #define M_DK LT(_DEAD, KC_K)
 
 enum custom_keycodes {
-  BACKDEL = SAFE_RANGE,
-  PUNCT1,
+  PUNCT1 = SAFE_RANGE,
   PUNCT2,
+  PUNCT3,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -70,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_CAPS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               M_DJ,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_NO,
+     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               M_DJ,    KC_L,    KC_U,    KC_Y,    PUNCT3,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,  KC_A,    HOME_CR, HOME_CS, HOME_CT, KC_D,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, KC_O,    KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -122,19 +121,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
-  [_SHIFT] = LAYOUT(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, S(KC_Q), S(KC_W), S(KC_F), S(KC_P), S(KC_G),                            S(KC_J), S(KC_L), S(KC_U), S(KC_Y), KC_PERC, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, S(KC_A), S(KC_R), S(KC_S), S(KC_T), S(KC_D),                            S(KC_H), S(KC_N), S(KC_E), S(KC_I), S(KC_O), S(KC_ENT),
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, S(KC_Z), S(KC_X), S(KC_C), S(KC_V), S(KC_B), _______,          _______, S(KC_K), S(KC_M), KC_EXLM, KC_QUES, KC_DQUO, _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   KC_DEL,  _______, _______
-                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ),
 
   [_DEAD] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -157,36 +143,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     mod_state = get_mods() | get_oneshot_mods();
     switch (keycode) {
 
-        case KC_BSPC:
-            {
-                // Initialize a boolean variable that keeps track
-                // of the delete key status: registered or not?
-                static bool delkey_registered;
-                if (record->event.pressed) {
-                    // Detect the activation of either shift keys
-                    if (mod_state & MOD_MASK_SHIFT) {
-                        // First temporarily canceling both shifts so that
-                        // shift isn't applied to the KC_DEL keycode
-                        del_mods(MOD_MASK_SHIFT);
-                        register_code(KC_DEL);
-                        // Update the boolean variable to reflect the status of KC_DEL
-                        delkey_registered = true;
-                        // Reapplying modifier state so that the held shift key(s)
-                        // still work even after having tapped the Backspace/Delete key.
-                        set_mods(mod_state);
-                        return false;
-                    }
-                } else { // on release of KC_BSPC
-                    // In case KC_DEL is still being sent even after the release of KC_BSPC
-                    if (delkey_registered) {
-                        unregister_code(KC_DEL);
-                        delkey_registered = false;
-                        return false;
-                    }
-                }
-                // Let QMK process the KC_BSPC keycode as usual outside of shift
-                return true;
-            }
         case PUNCT1:
             {
                 static bool exlmkey_registered;
@@ -232,6 +188,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
 
+        case PUNCT3:
+            {
+                static bool semikey_registered;
+                if (record->event.pressed) {
+                    if (mod_state & MOD_MASK_SHIFT) {
+                        register_code(KC_SCLN);
+                        semikey_registered = true;
+                    }
+                    else {
+                        register_code(KC_1);
+                    }
+                    return false;
+                } else { // on release of ,
+                    if (semikey_registered) {
+                        unregister_code(KC_SCLN);
+                        semikey_registered = false;
+                    } else {
+                        unregister_code(KC_1);
+                    }
+                    return false;
+                }
+            }
     }
 
     return true;
@@ -256,12 +234,3 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case HOME_CN:
-        case HOME_CT:
-            return TAPPING_TERM + 600;
-        default:
-            return TAPPING_TERM;
-    }
-}
