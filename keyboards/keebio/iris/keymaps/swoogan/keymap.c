@@ -69,11 +69,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_CAPS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               M_DJ,    KC_L,    KC_U,    KC_Y,    PUNCT3,  KC_NO,
+     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_V,                               M_DJ,    KC_L,    KC_U,    KC_Y,    PUNCT3,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_ESC,  KC_A,    HOME_CR, HOME_CS, HOME_CT, KC_D,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, KC_O,    KC_ENT,
+     KC_ESC,  KC_A,    HOME_CR, HOME_CS, HOME_CT, KC_G,                               KC_H,    HOME_CN, HOME_CE, HOME_CI, KC_O,    KC_ENT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          KC_LGUI, M_DK,    KC_M,    PUNCT1,  PUNCT2,  KC_QUOT, KC_NO,
+     KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_D,    KC_B,    KC_MUTE,          KC_LGUI, M_DK,    KC_M,    PUNCT1,  PUNCT2,  KC_QUOT, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_TAB,  M_NAV,   M_LSFT,                    M_RSYM,  M_NUM,   KC_BSPC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
