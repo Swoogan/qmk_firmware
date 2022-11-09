@@ -193,19 +193,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 static bool semikey_registered;
                 if (record->event.pressed) {
                     if (mod_state & MOD_MASK_SHIFT) {
-                        register_code(KC_SCLN);
+                        register_code(KC_1);
                         semikey_registered = true;
                     }
                     else {
-                        register_code(KC_1);
+                        register_code(KC_SCLN);
                     }
                     return false;
                 } else { // on release of ,
                     if (semikey_registered) {
-                        unregister_code(KC_SCLN);
+                        unregister_code(KC_1);
                         semikey_registered = false;
                     } else {
-                        unregister_code(KC_1);
+                        unregister_code(KC_SCLN);
                     }
                     return false;
                 }
