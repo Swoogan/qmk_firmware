@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_RIGHT
 
 // Home row mod settings
-#define TAPPING_TERM 200
+#define TAPPING_TERM 240
 
 // One shot settings
 #define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
-#define ONESHOT_TIMEOUT 1000  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TIMEOUT 800  /* Time (in ms) before the one shot key is released */
 
 // Prevent normal rollover from triggering mods
 #define IGNORE_MOD_TAP_INTERRUPT
