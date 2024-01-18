@@ -28,9 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ONESHOT_TAP_TOGGLE 2  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 800  /* Time (in ms) before the one shot key is released */
 
-// Prevent normal rollover from triggering mods
-#define IGNORE_MOD_TAP_INTERRUPT
-
 // This prevents accidental repeats of the tap-hold keys when typing quickly.
 // apparently this breaks ONESHOT_TAP_TOGGLE
 // #define TAPPING_FORCE_HOLD
@@ -38,3 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // This prevents short hold periods to be interpreted as individual taps when typing quickly.
 #define PERMISSIVE_HOLD
 
+#define RGBLIGHT_DEFAULT_MODE RGBLIGHT_MODE_BREATHING
+#define RGBLIGHT_DEFAULT_HUE  210
+#define RGBLIGHT_DEFAULT_SAT  UINT8_MAX
+#define RGBLIGHT_DEFAULT_VAL  RGBLIGHT_LIMIT_VAL

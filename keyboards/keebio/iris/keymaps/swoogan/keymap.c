@@ -35,8 +35,8 @@
 // #define M_NAV LT(_NAV, KC_ESC)
 #define M_NAV MO(_NAV)
 #define M_NUM LT(_NUMBER, KC_SPC)
-#define M_LSYM OSL(_SYMBOL)
-#define M_RSYM OSL(_SYMBOL)
+#define M_LSYM MO(_SYMBOL)
+#define M_RSYM MO(_SYMBOL)
 #define M_LSFT OSM(MOD_LSFT)
 
 // Temp
@@ -143,7 +143,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Store the current modifier state in the variable for later reference
     mod_state = get_mods() | get_oneshot_mods();
     switch (keycode) {
-
+        case KC_LSFT:
+            {
+                // static rgblight_config_t rgb_config_TEMP;  //###
+                if (record->event.pressed) {
+                    register_code(KC_LSFT);                // Press KC_LGUI,
+                    // rgb_config_TEMP = rgblight_config;     //### Save RGB settings
+                    rgblight_setrgb(RGB_YELLOW);
+                } else { // on release of ,
+                    unregister_code(KC_LSFT);              // Release KC_LGUI,
+                    // rgblight_config = rgb_config_TEMP;
+                }
+            }
+        // make ,! button
         case PUNCT1:
             {
                 static bool exlmkey_registered;
@@ -166,6 +178,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 }
             }
+        // make .? button
         case PUNCT2:
             {
                 static bool dotkey_registered;
@@ -188,7 +201,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 }
             }
-
+        // make ;% button
         case PUNCT3:
             {
                 static bool semikey_registered;
@@ -235,3 +248,20 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//     switch (get_highest_layer(state)) {
+//         case _NUMBER:
+//             rgblight_setrgb(RGB_BLUE);
+//             break;
+//         case _SYMBOL:
+//             rgblight_setrgb(RGB_RED);
+//             break;
+//         // case _NAV:
+//         //     rgblight_setrgb(RGB_GREEN);
+//         //     break;
+//         default: // for any other layers, or the default layer
+//             rgblight_setrgb (RGB_WHITE);
+//             break;
+//     }
+//   return state;
+// }
